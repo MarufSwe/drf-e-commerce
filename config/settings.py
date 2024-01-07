@@ -47,7 +47,11 @@ INSTALLED_APPS = [
 
     # Apps
     'e_auth',
-    'e_products'
+    'e_products',
+
+    # for swagger doc
+    'drf_yasg',
+
 ]
 
 MIDDLEWARE = [

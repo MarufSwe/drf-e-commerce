@@ -13,9 +13,20 @@ class Product(models.Model):
         return self.name
 
 
+# users to review products
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    rating = models.IntegerField()  # can use a rating system like 1 to 5
+    comment = models.TextField()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name}"
+
+
 class ShoppingCart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product, through='CartItem')
+    products = models.ManyToManyField(Product, through='CartItem', related_name='shopping_carts')
 
     def __str__(self):
         return f"Shopping Cart for {self.user.username}"
@@ -32,7 +43,6 @@ class CartItem(models.Model):
 
 class Purchase(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product, through='PurchaseItem')
     shipping_address = models.TextField()
     payment_details = models.TextField()
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -43,3 +53,4 @@ class PurchaseItem(models.Model):
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+    item_amount = models.DecimalField(max_digits=10, decimal_places=2)

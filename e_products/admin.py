@@ -1,11 +1,16 @@
 from django.contrib import admin
 
-from e_products.models import Product, ShoppingCart, CartItem, Purchase, PurchaseItem
+from e_products.models import Product, ShoppingCart, CartItem, Purchase, PurchaseItem, Review
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'description', 'price', 'image', 'stock_status']
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'product', 'rating', 'comment']
 
 
 @admin.register(ShoppingCart)

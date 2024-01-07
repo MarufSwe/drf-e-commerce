@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  # PostgreSQL service for the Django project
+  db_postgresql:
+    image: postgres
+    environment:
+      - POSTGRES_DB=devxhub_ecommerce
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"                    # Map local port 5432 to container port 5432
+
+  # Django backend service
+  backend_django:
+    build: .                           # Build the Docker image from the current directory
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app/e_commerce              # Map the current directory to /app/e_commerce in the container
+    ports:
+      - "8000:8000"                    # Map local port 8000 to container port 8000
+    depends_on:
+      - db_postgresql
